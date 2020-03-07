@@ -1,45 +1,49 @@
 $(document).ready(function(){
+	// whose turn it is
 	var turn = 'x';
-
+	// possible winning combos
+	var wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+	
+	// what happens when you click a space
 	$('.space').click(function() {
 		var space = $(this);
+		// if it already has an x or o, bail!
 		if (space.hasClass('x') || space.hasClass('o'))
 			return false;
+		// otherwise, set the character
 		space.addClass(turn);
+
+		// check to see if game over
+		checkWin();
+
+		// change turns
 		if (turn == 'x')
 			turn = 'o';
 		else
-			turn = 'x';
-
-		checkWin();
+			turn = 'x';		
 	});
 
+	// function to check if game over
 	function checkWin() {
 		var s = [];
+		// go over all of the spaces and push them into an array like
+		// ['x', 'o', 'x', 3, 4, 5, 6, 7, 8] (numbers are 'empty' squares)
 		var spaces = $('.space');
 		for (var i = 0; i < spaces.length; i++) {
 			var sp = $(spaces[i]);
 			s.push(sp.hasClass('x') ? 'x' : sp.hasClass('o') ? 'o' : i);
 		}
-		if (s[0] == s[1] && s[1] == s[2])
-			win(s[0]);
-		if (s[3] == s[4] && s[4] == s[5])
-			win(s[3]);
-		if (s[6] == s[7] && s[7] == s[8])
-			win(s[6]);
-		if (s[0] == s[3] && s[3] == s[6])
-			win(s[0]);
-		if (s[0] == s[4] && s[4] == s[8])
-			win(s[0]);
-		if (s[2] == s[5] && s[5] == s[8])
-			win(s[2]);
-		if (s[1] == s[4] && s[4] == s[7])
-			win(s[1]);
-		if (s[2] == s[4] && s[4] == s[6])
-			win(s[2]);
+
+		// loop over all of the possible winning rows and if one matches goto win function
+		for (var t = 0; t < wins.length; t++) {
+			if(s[wins[t][0]] == s[wins[t][1]] && s[wins[t][1]] == s[wins[t][2]])
+				win(s[wins[t][0]]);
+		}
 	}
 	
+	// simply console.log at this point
+	// TODO: add points! Scoreboard
 	function win(winner) {
-		alert( winner + " won!");
+		console.log( winner + " won!");
 	}
 });
