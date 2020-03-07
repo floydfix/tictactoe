@@ -1,1 +1,1 @@
-Check out my simple html tictactoe tutorial
+Check out my simple html Tic-Tac-Toe tutorial
